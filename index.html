@@ -94,10 +94,10 @@
       justify-content: center;
       align-items: center;
       margin: 10px 0;
-      height: 42vh;
+      height: 42vh; /* Наша идеальная высота для адаптивности картинок */
     }
 
-    /* Адаптивная умная сетка по эскизу */
+    /* Адаптивная умная сетка */
     .image-row {
       display: flex;
       flex-direction: row;
@@ -212,8 +212,8 @@
     .slide-desc {
       color: var(--text);
       font-size: 13px;
-      line-height: 1.5;
-      text-align: center;
+      line-height: 1.55;
+      text-align: left; /* Клод сделал выравнивание по левому краю для списков — это удобно */
     }
 
     .slide-desc b { color: var(--gold2); }
@@ -341,7 +341,13 @@
           </div>
           <div class="slide-path">📍 Навигация: <span>Запуск приложения ➔ Ввод данных</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">Запустите приложение HTX и пройдите первичную регистрацию профиля. <b>Нажмите на фото для увеличения!</b></p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> Откройте приложение HTX и на стартовом экране нажмите <b>«Регистрация»</b>.<br>
+            <b>2.</b> Введите свою почту или номер телефона и нажмите <b>«Далее»</b>.<br>
+            <b>3.</b> На экране «Введите код верификации» впишите 6 цифр, которые придут к вам на почту.
+          </p>
+        </div>
       </div>
 
       <!-- СЛАЙД 3: ШАГ 2 (1, 2, 5) -->
@@ -356,7 +362,13 @@
           </div>
           <div class="slide-path">📍 Навигация: <span>Профиль ➔ Верификация KYC</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">Отправьте документы для подтверждения личности, чтобы открыть доступ к торгам (Ур. 1 и Ур. 2).</p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> На главном экране нажмите на иконку <b>профиля</b> в левом верхнем углу.<br>
+            <b>2.</b> В профиле нажмите на плашку <b>«Без верификации»</b>.<br>
+            <b>3.</b> Пройдите по очереди все 3 уровня: <b>Ур.1 → Ур.2 → Ур.3</b>, нажимая «Пройти верификацию» у каждого пункта.
+          </p>
+        </div>
       </div>
 
       <!-- СЛАЙД 4: ШАГ 3 (3, 4, 7) -->
@@ -371,7 +383,13 @@
           </div>
           <div class="slide-path">📍 Навигация: <span>Настройки ➔ Безопасность</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">Подключите Google Authenticator или подтверждение по номеру телефона для защиты ваших средств.</p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> В профиле нажмите на иконку <b>шестерёнки</b> справа вверху — откроются «Настройки».<br>
+            <b>2.</b> Выберите пункт <b>«Безопасность»</b>.<br>
+            <b>3.</b> Привяжите минимум 2 способа защиты: <b>«Телефон»</b> и <b>«Google Authenticator»</b> (статус должен смениться на «Включено»).
+          </p>
+        </div>
       </div>
 
       <!-- СЛАЙД 5: ШАГ 4 (6) -->
@@ -384,7 +402,12 @@
           </div>
           <div class="slide-path">📍 Навигация: <span>Главный экран ➔ Купить крипто</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">На главном экране приложения перейдите в меню <b>«Купить крипто»</b> для перехода к торговле.</p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> На главном экране найдите блок быстрых кнопок и нажмите <b>«Купить Крипто»</b>.<br>
+            Это откроет раздел P2P-торговли, где вы будете покупать USDT за рубли.
+          </p>
+        </div>
       </div>
 
       <!-- СЛАЙД 6: ШАГ 5 (9, 10) -->
@@ -396,23 +419,36 @@
             <div class="img-wrap"><img src="img/9.png" class="slide-img" onclick="zoomImg(this)"></div>
             <div class="img-wrap"><img src="img/10.png" class="slide-img" onclick="zoomImg(this)"></div>
           </div>
-          <div class="slide-path">📍 Навигация: <span>P2P ➔ Фильтр (Валюта / Банк)</span></div>
+          <div class="slide-path">📍 Навигация: <span>P2P ➔ Фильтр (значок воронки)</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">Выберите фиатную валюту <b>RUB</b>, актив <b>USDT</b> и отфильтруйте объявления по вашему банку.</p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> В разделе P2P нажмите на иконку <b>фильтра</b> (воронка) справа вверху над списком.<br>
+            <b>2.</b> В блоке «Активности» оставьте <b>«Все»</b>.<br>
+            <b>3.</b> В блоке «% завершённых за 30дн у мейкера» выберите <b>не ниже 90%</b> — это надёжность продавца.<br>
+            <b>4.</b> Нажмите <b>«Подтвердить»</b>.
+          </p>
+        </div>
       </div>
 
-      <!-- СЛАЙД 7: ШАГ 6 (14, 12) -->
+      <!-- СЛАЙД 7: ШАГ 6 (11, 12) -->
       <div class="swiper-slide">
         <div class="slide-badge">6 / 8</div>
         <div class="slide-header"><div class="slide-num">Шаг 06</div><h2 class="slide-title">Выбор способа оплаты</h2></div>
         <div class="slide-content">
           <div class="image-row">
-            <div class="img-wrap"><img src="img/14.png" class="slide-img" onclick="zoomImg(this)"></div>
+            <div class="img-wrap"><img src="img/11.png" class="slide-img" onclick="zoomImg(this)"></div>
             <div class="img-wrap"><img src="img/12.png" class="slide-img" onclick="zoomImg(this)"></div>
           </div>
-          <div class="slide-path">📍 Навигация: <span>Лента объявлений ➔ Выбор мерчанта</span></div>
+          <div class="slide-path">📍 Навигация: <span>Лента объявлений ➔ Оплата</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">Подберите надежного продавца с хорошим курсом и укажите доступный метод перевода средств.</p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> Нажмите на выпадающий список <b>«Оплата»</b> над лентой объявлений.<br>
+            <b>2.</b> В открывшемся окне «Метод оплаты» выберите свой банк (СБП, Сбербанк, Тинькофф и т.д.).<br>
+            <b>3.</b> Нажмите <b>«Подтвердить»</b>.
+          </p>
+        </div>
       </div>
 
       <!-- СЛАЙД 8: ШАГ 7 (13, 14, 17) -->
@@ -425,9 +461,14 @@
             <div class="img-wrap"><img src="img/14.png" class="slide-img" onclick="zoomImg(this)"></div>
             <div class="img-wrap"><img src="img/17.png" class="slide-img" onclick="zoomImg(this)"></div>
           </div>
-          <div class="slide-path">📍 Навигация: <span>Окно ордера ➔ Ввод суммы в RUB</span></div>
+          <div class="slide-path">📍 Навигация: <span>Сумма ➔ Проверка продавца</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">Пропишите точную сумму в рублях, на которую вы планируете приобрести цифровые доллары.</p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> Нажмите на выпадающий список <b>«Сумма»</b> и в поле «Я хочу купить» впишите нужную сумму в рублях.<br>
+            <b>2.</b> Перед выбором объявления проверьте у продавца статистику справа — <b>количество сделок и процент</b> (он должен быть <b>не ниже 90%</b>).
+          </p>
+        </div>
       </div>
 
       <!-- СЛАЙД 9: ШАГ 8 (15, 16) -->
@@ -439,9 +480,16 @@
             <div class="img-wrap"><img src="img/15.png" class="slide-img" onclick="zoomImg(this)"></div>
             <div class="img-wrap"><img src="img/16.png" class="slide-img" onclick="zoomImg(this)"></div>
           </div>
-          <div class="slide-path">📍 Навигация: <span>Создание ордера ➔ Ожидание реквизитов</span></div>
+          <div class="slide-path">📍 Навигация: <span>Выбор объявления ➔ Кнопка «Купить»</span></div>
         </div>
-        <div class="slide-footer"><p class="slide-desc">Подтвердите открытие сделки, скопируйте реквизиты продавца и совершите перевод через онлайн-банк.</p></div>
+        <div class="slide-footer">
+          <p class="slide-desc">
+            <b>1.</b> Найдите в списке подходящее объявление с хорошим курсом и нажмите на него.<br>
+            <b>2.</b> На экране «Купить» проверьте сумму, способ оплаты и время на оплату (обычно 10 минут).<br>
+            <b>3.</b> Нажмите зелёную кнопку <b>«Купить»</b>, скопируйте реквизиты продавца и переведите деньги через свой банк.<br>
+            <b>⚠ Важно:</b> не пишите в комментарии к переводу слова USDT, BTC, HTX и любые упоминания крипты.
+          </p>
+        </div>
       </div>
 
       <!-- СЛАЙД 10: ПРАВИЛА БЕЗОПАСНОСТИ -->
@@ -460,6 +508,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
+    // Нативный запуск Telegram API
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
 
