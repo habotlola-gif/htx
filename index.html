@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HTX P2P Гайд</title>
+  
+  <!-- Подключаем Telegram Web App API -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- Подключаем стили для красивой анимации Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@700;900&display=swap');
+
+    :root {
+      --bg: #09080a;
+      --card: #161210;
+      --card-border: #2a2218;
+      --gold: #c9963a;
+      --gold2: #e8b84b;
+      --text: #f0ead8;
+      --muted: #8a7a60;
+      --muted2: #5a4e38;
+      --green: #4ade80;
+      --red: #f87171;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    /* Контейнер Swiper на весь экран */
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 24px 90px 24px; /* Отступ снизу под кнопку Помощь */
+      position: relative;
+    }
+
+    /* Индикатор страниц */
+    .slide-badge {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(201,150,58,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold2);
+      font-size: 11px;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-family: 'Unbounded', sans-serif;
+      z-index: 10;
+    }
+
+    .slide-header {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .slide-num {
+      font-family: 'Unbounded', sans-serif;
+      color: var(--gold);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .slide-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .slide-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0;
+      height: 40vh;
+    }
+
+    .img-wrap {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .slide-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .slide-path {
+      width: 100%;
+      margin-top: 12px;
+      padding: 6px 12px;
+      background: rgba(138, 122, 96, 0.05);
+      border: 1px dashed var(--muted2);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--gold2);
+      text-align: center;
+    }
+
+    .slide-path span { color: var(--text); }
+
+    .slide-footer {
+      margin-top: 10px;
+    }
+
+    .slide-desc {
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .slide-desc b { color: var(--gold2); }
+
+    /* Обложка */
+    .cover-slide {
+      text-align: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(201,150,58,0.12) 0%, var(--card) 75%);
+    }
+
+    .cover-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .cover-title span {
+      background: linear-gradient(135deg, var(--gold) 0%, #f5d06e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      padding: 0 10px;
+    }
+
+    .start-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color: #000;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 14px 36px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(201,150,58,0.2);
+    }
+
+    /* Правила */
+    .rule-item {
+      font-size: 13px;
+      margin-bottom: 12px;
+      padding-left: 15px;
+      position: relative;
+    }
+    .rule-item::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-weight: bold;
+    }
+
+    /* Фиксированная кнопка ПОМОЩЬ в самом низу */
+    .help-bar {
+      position: fixed;
+      bottom: 16px;
+      left: 24px;
+      right: 24px;
+      z-index: 999;
+    }
+
+    .help-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background: #1a1613;
+      border: 1px solid var(--card-border);
+      color: var(--gold2);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+      transition: background 0.2s;
+    }
+    .help-btn:active { background: #26201b; }
+  </style>
+</head>
+<body>
+
+  <!-- Кнопка Помощь (всегда накладывается поверх внизу экрана) -->
+  <div class="help-bar" id="helpBar" style="display: none;">
+    <!-- Сэр, ЗАМЕНИТЕ '@ajamobmen' на ваш реальный ник в ТГ ниже -->
+    <a href="https://t.me/@ajamobmen" target="_blank" class="help-btn">💖 Нужна помощь куратора</a>
+  </div>
+
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+
+      <!-- СЛАЙД 1: ОБЛОЖКА -->
+      <div class="swiper-slide cover-slide">
+        <h1 class="cover-title">ОБУЧЕНИЕ:<br><span>P2P НА HTX</span></h1>
+        <p class="cover-desc">Всех приветствую! Это наш интерактивный пошаговый тренажер по выкупу цифрового доллара (USDT). Листайте пальцем вверх!</p>
+        <div>
+          <button class="start-btn" onclick="goNext()">Начать ➔</button>
+        </div>
+      </div>
+
+      <!-- СЛАЙД 2: ШАГ 1 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">1 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 01</div><h2 class="slide-title">Регистрация аккаунта</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/Pvv6bLBV/Picsart-26-06-29-22-24-57-946.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Запуск приложения ➔ Главный экран</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Запустите приложение HTX и выберите меню <b>«Регистрация»</b> в центре главного экрана.</p></div>
+      </div>
+
+      <!-- СЛАЙД 3: ШАГ 2 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">2 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 02</div><h2 class="slide-title">Подтверждение Email</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/5gdwPYgX/Screenshot-20260629-221830.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Кнопка «Регистрация» ➔ Ввод Email ➔ Код</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Укажите адрес электронной почты, скопируйте проверочный код из письма и введите его в ячейки.</p></div>
+      </div>
+
+      <!-- СЛАЙД 4: ШАГ 3 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">3 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 03</div><h2 class="slide-title">Защита профиля</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/PG2rnncz/Screenshot-20260629-161449.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Пароль</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Установите надежный пароль, соответствующий требованиям безопасности системы, и нажмите <b>«Подтвердить»</b>.</p></div>
+      </div>
+
+      <!-- СЛАЙД 5: ШАГ 4 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">4 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 04</div><h2 class="slide-title">Личный кабинет</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/Vkqn8zy/Screenshot-20260629-161526.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Главный экран ➔ Иконка профиля (вверху слева)</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Перейдите в меню настроек личного профиля, нажав на аватар пользователя в верхнем левом углу.</p></div>
+      </div>
+
+      <!-- СЛАЙД 6: ШАГ 5 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">5 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 05</div><h2 class="slide-title">Прохождение KYC</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/0RHBwbkS/Screenshot-20260629-161522.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Личный кабинет ➔ Кнопка «Без верификации»</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Для активации возможностей торговли выберите разделы <b>Ур. 1</b> и <b>Ур. 2</b> для отправки данных удостоверения личности.</p></div>
+      </div>
+
+      <!-- СЛАЙД 7: ШАГ 6 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">6 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 06</div><h2 class="slide-title">Вход в P2P-маркет</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/205HxMXV/Screenshot-20260629-161535.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Главный экран ➔ Кнопка «Купить крипто»</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Для покупки активов на основном экране нажмите на кнопку <b>«Купить крипто»</b>.</p></div>
+      </div>
+
+      <!-- СЛАЙД 8: ШАГ 7 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">7 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 07</div><h2 class="slide-title">Настройки безопасности</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/hJhyMC7K/Screenshot-20260629-161545.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Кабинет ➔ Шестерёнка ➔ Безопасность</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Активируйте дополнительные параметры верификации (номер телефона или Google Authenticator) для защиты вывода.</p></div>
+      </div>
+
+      <!-- СЛАЙД 9: ШАГ 8 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">8 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 08</div><h2 class="slide-title">Выбор объявления</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/4ZnpzLFZ/Screenshot-20260629-161607.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>«Купить крипто» ➔ Вкладка «P2P»</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Задайте фильтр по вашему банку, выберите направление <b>«Покупка»</b>, актив <b>USDT</b> и валюту <b>RUB</b>.</p></div>
+      </div>
+
+      <!-- СЛАЙД 10: ШАГ 9 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">9 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 09</div><h2 class="slide-title">Открытие ордера</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/C3jmbyvn/Screenshot-20260629-161614.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Лента объявлений P2P ➔ Кнопка «Купить» у мерчанта</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Укажите сумму в рублях, которую хотите обменять, и нажмите кнопку создания ордера.</p></div>
+      </div>
+
+      <!-- СЛАЙД 11: ШАГ 10 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">10 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 10</div><h2 class="slide-title">Оплата по реквизитам</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/0RBcrkb4/Screenshot-20260630-034642.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Окно созданного ордера ➔ Копирование данных</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Внимательно скопируйте реквизиты (номер карты и банк) продавца и переведите ему точную сумму через свой онлайн-банк.</p></div>
+      </div>
+
+      <!-- СЛАЙД 12: ШАГ 11 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">11 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 11</div><h2 class="slide-title">Подтверждение оплаты</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/XZhQrwng/Screenshot-20260630-034729.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Онлайн-банк ➔ Кнопка подтверждения платежа</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">После того как деньги ушли из вашего банка, обязательно возвращаемся в приложение и нажимаем кнопку подтверждения оплаты.</p></div>
+      </div>
+
+      <!-- СЛАЙД 13: ШАГ 12 -->
+      <div class="swiper-slide">
+        <div class="slide-badge">12 / 12</div>
+        <div class="slide-header"><div class="slide-num">Шаг 12</div><h2 class="slide-title">Отпуск монет</h2></div>
+        <div class="slide-content">
+          <div class="img-wrap"><img src="https://i.ibb.co/rKdt7Hpn/Screenshot-20260630-032844.jpg" class="slide-img"></div>
+          <div class="slide-path">📍 Навигация: <span>Чат ордера со статусом «Ожидается выпуск»</span></div>
+        </div>
+        <div class="slide-footer"><p class="slide-desc">Статус меняется на <b>«Ожидается выпуск»</b>. Продавец заходит в свой банк, проверяет поступление ваших рублей и отпускает монеты USDT.</p></div>
+      </div>
+
+      <!-- СЛАЙД 14: ПРАВИЛА БЕЗОПАСНОСТИ -->
+      <div class="swiper-slide" style="justify-content: flex-start;">
+        <div class="slide-header" style="margin-bottom: 20px;"><div class="slide-num">Важно</div><h2 class="slide-title" style="color: var(--red);">Правила безопасности</h2></div>
+        <div style="flex-grow: 1;">
+          <div class="rule-item"><b>Не пишите комментарии</b> к банковским переводам (никаких упоминаний крипты).</div>
+          <div class="rule-item"><b>Проводите сделки только на бирже</b>. Предложения перейти в сторонние мессенджеры — скам.</div>
+          <div class="rule-item">При продаже активов <b>проверяйте баланс внутри онлайн-банка</b>, а не по СМС.</div>
+          <div class="rule-item">Вы огромные умницы, девчонки! У вас всё получится! 💖</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Скрипты инициализации карусели -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    // Сообщаем Telegram, что приложение готово к работе
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand(); // Раскрываем Mini App на весь экран телефона
+
+    // Инициализируем Swiper с вертикальной прокруткой и красивым эффектом
+    const swiper = new Swiper('.mySwiper', {
+      direction: 'vertical',
+      effect: 'slide',
+      speed: 600,
+      mousewheel: true,
+      threshold: 20,
+      on: {
+        slideChange: function () {
+          const helpBar = document.getElementById('helpBar');
+          // Показываем кнопку Помощь на всех слайдах, кроме первого (Обложки)
+          if (this.activeIndex > 0) {
+            helpBar.style.display = 'block';
+          } else {
+            helpBar.style.display = 'none';
+          }
+        }
+      }
+    });
+
+    function goNext() {
+      swiper.slideNext();
+    }
+  </script>
+</body>
+</html>
